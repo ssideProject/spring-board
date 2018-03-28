@@ -1,6 +1,8 @@
 package com.app.spring.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +40,25 @@ public class BoardDaoImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return sqlSession.selectList("board.listAll");
+	public List<BoardVO> listAll(String searchOption, String keyword) throws Exception {
+		//검색옵션과 키워드를 맵에 저장해서 같이 매개변수로!
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);		
+		return sqlSession.selectList("board.listAll",map);
 	}
 
 	@Override
 	public void increaseViewcnt(int bno) throws Exception {
 		sqlSession.update("board.increaseViewcnt", bno);
 
+	}
+	
+	public int countArticle(String searchOption, String keyword) throws	Exception{
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchOption", searchOption);
+		map.put("keyword", keyword);
+		return sqlSession.selectOne("board.countArticle", map);
 	}
 
 }

@@ -13,10 +13,37 @@
             viewcnt 
         FROM 
             tbl_board
+       	<!-- WHERE절을 include 태그로 삽입 -->
+    	<include refid="search"></include>
         ORDER BY 
             bno desc, 
             regdate desc
 	</select>
+	
+	<select id="countArticle" resultType ="int"	>
+		select count(*) From tbl_board
+		<include refid="search"></include>
+	</select>
+	
+	<!-- sql 조각 -->
+	<!-- 반복되는 SQL의 일부를 SQL태그를 이용하여 따로 빼둘수 있다. -->
+	<sql id = "search">
+		<choose>
+			<!-- 검색옵션이 전체 검색일 경우 -->
+			<when test ="searchOption ==  'all' ">
+				WHERE writer like '%'||#{keyword}||'%'
+	            OR content like '%'||#{keyword}||'%'
+	            OR title like '%'||#{keyword}||'%'
+            </when>
+            <!-- 전체 검색이 아닐 경우 -->
+            <otherwise>
+            	where ${searchOption} like '%'||#{keyword}||'%'
+            </otherwise>
+		</choose>
+	</sql>
+	
+	
+	
 	
 	 <!-- 02. 게시글 작성 -->
 	 <!-- nvl (A,B) : A가 null 이면 B, null 이 아니면 A -->

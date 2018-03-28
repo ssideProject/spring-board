@@ -1,12 +1,13 @@
 package com.app.spring.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,14 +26,21 @@ public class BoardController {
 	
 	
 	//게시글 목록
-	@RequestMapping("list.do")
-	public ModelAndView list() throws Exception{ // 모델뷰를 안써서 list()의 매개변수가 없다!
-		List<BoardVO> list = boardService.listAll();
-		ModelAndView mav = new ModelAndView(); //모델엔뷰가 왜 쓰이는걸까? 생각해보면, 메소드에서 인자값을 선언안해도된다.
-		mav.setViewName("board/list"); //여기서 viewName을 셋팅하고 
-		mav.addObject("list", list); // 여기서 오브젝트를 넘겨주고 모델뷰 객체 자체를 넘겨주면 되는것이다.
-		return mav; //이전에는 Model이나 HttpsRequest,Respone 등을 선언해주고 뷰쪽으로 넘겨주었는데 간소화 시킨것.
-		// list.jsp로 List가 같이 전달이 된다.
+	@RequestMapping("list.do")//파라매터를 default값을 준 이유를 생각해보기
+	public ModelAndView list(@RequestParam(defaultValue ="title") String searchOption,
+								@RequestParam(defaultValue="") String keyword) throws Exception{ 
+		List<BoardVO> list = boardService.listAll(searchOption, keyword);
+		int count = boardService.countArticle(searchOption,keyword); // 레코드의 갯수
+		ModelAndView mav = new ModelAndView(); 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list); // list
+	    map.put("count", count); // 레코드의 갯수
+	    map.put("searchOption", searchOption); // 검색옵션
+	    map.put("keyword", keyword); // 검색키워드
+	    
+	    mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
+	    mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
+	    return mav; // list.jsp로 List가 전달된다.
 	}
 	
 	
