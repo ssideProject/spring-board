@@ -45,8 +45,11 @@ public class BoardController {
 	
 	
 	//게시글 작성 화면
-	@RequestMapping(value="write.do", method=RequestMethod.GET) //@RequestMapping("board/write.do")
-	public String write() {
+	@RequestMapping(value="write.do", method=RequestMethod.POST) //@RequestMapping("board/write.do")
+	public String write(@ModelAttribute BoardVO vo, HttpSession session) throws Exception {
+		String writer = (String) session.getAttribute("id");
+		vo.setWriter(writer);
+		boardService.create(vo);
 		return "board/write";
 	}
 	
