@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
 		writer = writer.replace(">", "&gt");
 		// * 공백 처리	
 		title = title.replace(" ", "&nbsp;&nbsp;");
-		writer = title.replaceAll(" ", "&ndsp;&nbsp");
+		writer = writer.replaceAll(" ", "&ndsp;&nbsp");
 		//* 줄바꿈 문자처리
 		content = content.replace("\n", "<br>");
 		// 그리고 저장.
@@ -59,8 +59,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> listAll() throws Exception {
-		return boardDao.listAll();
+	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception {
+	    return boardDao.listAll(int start, int end, start, end, searchOption, keyword);
 	}
 
 	@Override
@@ -81,5 +81,11 @@ public class BoardServiceImpl implements BoardService {
 			
 		}
 	}
+	
+		
+	public int countArticle(String searchOption, String keyword) throws Exception {
+	    return boardDao.countArticle(searchOption, keyword);
+	}
+
 
 }

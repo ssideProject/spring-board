@@ -15,8 +15,11 @@ public interface BoardService {
 	public void update(BoardVO vo )throws Exception;
 	//삭제
 	public void delete(int bno) throws Exception;
-	//전체 리스트
-	public List<BoardVO> listAll() throws Exception;
+	//전체 리스트 -> 검색 옵션, 키퉈드 매개변수 추가
+	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception;
 	//게시글 조회
-	public void increaseViewcnt	(int bno, HttpSession session) throws	 Exception;
+	public void increaseViewcnt	(int bno, HttpSession session) throws Exception;
+	// 07. 게시글 레코드 갯수 메서드 추가
+	public int countArticle(String searchOption, String keyword) throws Exception;
+	
 }

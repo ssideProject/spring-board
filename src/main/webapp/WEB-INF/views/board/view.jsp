@@ -31,11 +31,11 @@
                 document.form1.content.focus();
                 return;
             }
-            if(writer == ""){
+            /*if(writer == ""){
                 alert("이름을 입력하세요");
                 document.form1.writer.focus();
                 return;
-            }
+            }*/
             document.form1.action="${path}/board/update.do"
             // 폼에 입력한 데이터를 서버로 전송
             document.form1.submit();
@@ -63,14 +63,17 @@
         <textarea name="content" id="content" rows="4" cols="80" placeholder="내용을 입력해주세요">${dto.content}</textarea>
     </div>
     <div>
-        이름
-        <input name="writer" id="writer" value="${dto.writer}" placeholder="이름을 입력해주세요">
+        이름 : ${dto.userName}
+        <%-- <input name="writer" id="writer" value="${dto.writer}" placeholder="이름을 입력해주세요"> --%>
     </div>
     <div style="width:650px; text-align: center;">
         <!-- 게시물번호를 hidden으로 처리 -->
         <input type="hidden" name="bno" value="${dto.bno}">
-        <button type="button" id="btnUpdete">수정</button>
-        <button type="button" id="btnDelete">삭제</button>
+        <!-- 본인이 쓴 게시물만 수정, 삭제가 가능하도록 처리 -->
+    	<c:if test="${sessionScope.id == dto.writer}">
+        	<button type="button" id="btnUpdete">수정</button>
+        	<button type="button" id="btnDelete">삭제</button>
+    	</c:if>
     </div>
 </form>
 </body>
