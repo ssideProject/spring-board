@@ -16,7 +16,7 @@ public interface BoardDAO {
 		//삭제
 		public void delete(int bno) throws Exception;
 		//전체 리스트
-		public List<BoardVO> listAll(String searchOption, String keyword) throws Exception;
+		public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception;
 		//게시글 조회
 		public void increaseViewcnt	(int bno) throws	 Exception;
 		// 07. 게시글 레코드 갯수 메서드 추가

@@ -40,11 +40,14 @@ public class BoardDaoImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> listAll(String searchOption, String keyword) throws Exception {
+	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception {
 		//검색옵션과 키워드를 맵에 저장해서 같이 매개변수로!
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("searchOption", searchOption);
-		map.put("keyword", keyword);		
+		map.put("keyword", keyword);
+		//BETWEEN #{start} . #{end} 에 입력될 값을 맵에
+		map.put("start", start);
+		map.put("end", end);
 		return sqlSession.selectList("board.listAll",map);
 	}
 

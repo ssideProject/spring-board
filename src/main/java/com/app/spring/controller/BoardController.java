@@ -26,18 +26,31 @@ public class BoardController {
 	
 	
 	//게시글 목록
-	@RequestMapping("list.do")//파라매터를 default값을 준 이유를 생각해보기
+	@RequestMapping("list.do")//파라매터를 default값을 준 이유를 생각해보기 triger로 쓰이고 있다.
 	public ModelAndView list(@RequestParam(defaultValue ="title") String searchOption,
-								@RequestParam(defaultValue="") String keyword) throws Exception{ 
-		List<BoardVO> list = boardService.listAll(searchOption, keyword);
-		int count = boardService.countArticle(searchOption,keyword); // 레코드의 갯수
-		ModelAndView mav = new ModelAndView(); 
-		Map<String, Object> map = new HashMap<String, Object>();
+								@RequestParam(defaultValue="") String keyword,
+								@RequestParam(defaultValue="1") int curPage) throws Exception{ 
+		
+		//레코드의 갯수 계산
+		int count = boardService.countArticle(searchOption, keyword);
+		
+		//페이지 나누기 관리 처리
+		BoardPager	boardPager = new BoardPager(count, curPage);
+		int start = boardPager.getPageBegin();
+		int end = boardPager.getPageEnd();
+		
+		List<BoardVO> list = boardService.listAll(start, end, searchOption, keyword);
+		
+		//데이터를 맵에 저장
+		Map<String, Obejct> map = new HashMap<String, Object>();
 		map.put("list", list); // list
 	    map.put("count", count); // 레코드의 갯수
 	    map.put("searchOption", searchOption); // 검색옵션
 	    map.put("keyword", keyword); // 검색키워드
+	    map.put("boardPager", baordPager);
+		
 	    
+	    ModelAndView mav = new ModelAndView(); 
 	    mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
 	    mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
 	    return mav; // list.jsp로 List가 전달된다.
@@ -45,18 +58,19 @@ public class BoardController {
 	
 	
 	//게시글 작성 화면
-	@RequestMapping(value="write.do", method=RequestMethod.POST) //@RequestMapping("board/write.do")
-	public String write(@ModelAttribute BoardVO vo, HttpSession session) throws Exception {
-		String writer = (String) session.getAttribute("id");
-		vo.setWriter(writer);
-		boardService.create(vo);
+	@RequestMapping(value="write.do", method=RequestMethod.GET) //@RequestMapping("board/write.do")
+	public String write(@ModelAttribute BoardVO vo) {
 		return "board/write";
 	}
 	
 	
 	//게시글 작성 처리
 	@RequestMapping(value="insert.do", method = RequestMethod.POST)
-	public String insert(@ModelAttribute BoardVO vo) throws Exception{
+	public String insert(@ModelAttribute BoardVO vo, HttpSession session) throws Exception{
+		String writer = (String) session.getAttribute("id");
+		String userName = (String) session.getAttribute("name");
+		vo.setWriter(writer);
+		vo.setUserName(userName);
 		boardService.create(vo);
 		return "redirect:list.do"; // "redirect:/list.do"와다른것인가??
 	}

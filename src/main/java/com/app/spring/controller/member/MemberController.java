@@ -30,7 +30,7 @@ public class MemberController {
 	//02 로그인처리
 	@RequestMapping("loginCheck.do")
 	public ModelAndView login(@ModelAttribute MemberVO vo, HttpSession session) {
-		boolean result = memberService.loginCheck(vo,session);
+		boolean result = memberService.loginCheck(vo, session);
 		ModelAndView mav = new ModelAndView();
 		
 		if(result== true) {
