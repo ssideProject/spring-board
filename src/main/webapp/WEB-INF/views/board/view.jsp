@@ -6,6 +6,12 @@
 <title>게시글 작성</title>
 <%@ include file="../include/header.jsp" %>
 <script>
+	$(document).ready(function(){
+		//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
+		$("#btnList").click(function(){
+			location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${key});
+	});
+
     $(document).ready(function(){
         $("#btnDelete").click(function(){
             if(confirm("삭제하시겠습니까?")){
@@ -74,6 +80,7 @@
         	<button type="button" id="btnUpdete">수정</button>
         	<button type="button" id="btnDelete">삭제</button>
     	</c:if>
+    	<button type="button" id ="btnList">목록</button>
     </div>
 </form>
 </body>

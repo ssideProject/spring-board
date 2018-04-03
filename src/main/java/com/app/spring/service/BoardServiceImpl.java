@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception {
-	    return boardDao.listAll(int start, int end, start, end, searchOption, keyword);
+	    return boardDao.listAll( start, end, searchOption, keyword);
 	}
 
 	@Override

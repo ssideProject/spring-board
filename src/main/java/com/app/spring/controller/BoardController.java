@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.app.spring.model.dto.BoardVO;
 import com.app.spring.service.BoardService;
+import com.app.spring.service.board.BoardPager;
 
 @Controller
 @RequestMapping("/board/*")
@@ -42,17 +43,18 @@ public class BoardController {
 		List<BoardVO> list = boardService.listAll(start, end, searchOption, keyword);
 		
 		//데이터를 맵에 저장
-		Map<String, Obejct> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list); // list
 	    map.put("count", count); // 레코드의 갯수
 	    map.put("searchOption", searchOption); // 검색옵션
 	    map.put("keyword", keyword); // 검색키워드
-	    map.put("boardPager", baordPager);
+	    map.put("boardPager", boardPager);
 		
 	    
 	    ModelAndView mav = new ModelAndView(); 
 	    mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
 	    mav.setViewName("board/list"); // 뷰를 list.jsp로 설정
+	    
 	    return mav; // list.jsp로 List가 전달된다.
 	}
 	

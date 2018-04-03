@@ -93,7 +93,7 @@ public class BoardPager {
 	}
 
 
-	public void setTotPage(int totPage) {
+	public void setTotPage(int count) {
 		// Math.ceil(실수) 올림처리
 		totPage = (int) Math.ceil(count*1.0 / PAGE_SCALE);
 	}
