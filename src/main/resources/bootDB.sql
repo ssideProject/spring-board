@@ -30,6 +30,27 @@ SELECT bno,title,content, b.regdate, viewcnt, userName
 alter table TBL_board add(USERNAME varchar(50));
 
 
+create table tbl_reply(
+	bno integer not null,
+	replytext varchar(500) not null,
+	replyer varchar(100) not null,
+	userName varchar(100) not null,
+	regdate Date default SYSDATE,
+	updatedate Date default SYSDATE,
+	CONSTRAINT PK_reply PRIMARY KEY(bno)
+)
+
+
+
+private Integer rno;        // 댓글 번호
+    private Integer bno;        // 게시글 번호
+    private String replytext;    // 댓글 내용
+    private String replyer;        // 댓글 작성자
+    private String userName;    // 댓글 작성자의 이름(회원의 이름)
+    private Date regdate;        // 댓글 작성일자
+    private Date updatedate;
+
+
 
         
         
