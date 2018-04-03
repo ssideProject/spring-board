@@ -9,7 +9,7 @@
 	$(document).ready(function(){
 		//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
 		$("#btnList").click(function(){
-			location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${key});
+			location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
 	});
 
     $(document).ready(function(){
@@ -18,7 +18,7 @@
                 document.form1.action = "${path}/board/delete.do";
                 document.form1.submit();
             }
-        });
+     });
         
         $("#btnUpdete").click(function(){
             //var title = document.form1.title.value; ==> name속성으로 처리할 경우
@@ -42,11 +42,12 @@
                 document.form1.writer.focus();
                 return;
             }*/
-            document.form1.action="${path}/board/update.do"
+            document.form1.action="${path}/board/update.do";
             // 폼에 입력한 데이터를 서버로 전송
             document.form1.submit();
         });
     });
+	 });
 </script>
 </head>
 <body>

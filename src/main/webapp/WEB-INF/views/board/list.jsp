@@ -11,7 +11,16 @@
         	//페이지 주소 변경(이동)
             location.href = "${path}/board/write.do";
         });
-    });킹
+    });
+    
+    $(document).ready(function(){
+        $("#signIn").click(function(){
+        	//회원가입하러가기.
+            location.href = "${path}/member/write.do";
+        });
+    });
+    
+    
     // 원하는 페이지로 이동시 검색조건, 키워드 값을 유지하기 위해
     function list(page){
         location.href="${path}/board/list.do?curPage="+page+"&searchOption-${map.searchOption}"+"&keyword=${map.keyword}";
@@ -35,7 +44,16 @@
         <input type="submit" value="조회">
         <c:if test="${sessionScope.id != null }">
 			<button type="button" id="btnWrite">글쓰기</button>
-		</c:if>	
+		</c:if>
+		<c:choose>
+			<c:when test = "${sessionScope.id == null }">
+				<button type="button" id="signIn">회원 가입</button>
+			</c:when>
+			<c:otherwise>
+				<button type="button" onclick="location.href='${path}/member/view.do'">회원정보 수정</button>
+			</c:otherwise>
+		</c:choose>
+		
 </form>
 
 <!-- 레코드의 갯수를 출력 -->
@@ -51,7 +69,7 @@ ${map.count}개의 게시물이 있습니다.
     <c:forEach var="row" items="${map.list}">
     <tr>
         <td>${row.bno}</td>
-        <td><a href="${path}/board/view.do?bno=${row.bno}">${row.title}</a></td>
+        <td><a href="${path}/board/view.do?bno=${row.bno}&curPage=${map.boardPager.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}">${row.title}</a></td>
         <td>${row.userName}</td>
         <td>
             <!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->

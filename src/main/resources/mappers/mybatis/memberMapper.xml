@@ -16,8 +16,55 @@
             id,
             age,
             reg
+            FROM member
+        WHERE id = #{id} AND passwd = #{passwd}
+    </select>
+    
+    <insert id="insertMember">
+        INSERT INTO member
+            (id, passwd, name, age)
+        VALUES 
+            (#{id}, #{passwd}, #{name}, #{age})    
+    </insert>
+    
+    <!-- 수정하는 것이다. -->
+    <update id="updateMember">
+    	UPDATE member
+        SET
+            passwd = #{passwd},
+            name = #{name},
+            age = #{age},
+            updt = sysdate
+        WHERE
+            id = #{id}
+    </update>
+    
+    <!-- 05. 회원정보 삭제 처리 -->
+    <delete id="deleteMember">
+        DELETE FROM member
+        WHERE id = #{id}
+    </delete>
+    
+    <!-- 06. 비밀번호 체크 -->
+    <select id="checkPasswd" resultType="int">
+        SELECT 
+            COUNT(*) 
         FROM member
         WHERE id = #{id} AND passwd = #{passwd}
     </select>
+    
+    <!-- 회원수정에 쓰이는 정보를 받아온다. -->
+    <select id="detailMember" resultType ="com.app.spring.model.dto.member.MemberVO">
+    	SELECT
+    		id as id,
+    		name as name,
+    		age as age,
+    		reg as reg,
+    		reg as updt
+    	FROM MEMBER
+    	WHERE id = #{id}
+    </select>
+    
+    
  
 </mapper>

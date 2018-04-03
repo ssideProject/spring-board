@@ -1,5 +1,7 @@
 package com.app.spring.service.member;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,35 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO viewMember(MemberVO vo) {
 		return memberDao.viewMember(vo);
+	}
+	
+	@Override
+	public List<MemberVO> memberList() {
+		return memberDao.memberList();
+	}
+
+	@Override
+	public void insertMember(MemberVO vo) {
+		memberDao.insertMember(vo);
+	}
+
+	@Override
+	public MemberVO detailMember(String id) {
+		return memberDao.detailMember(id);
+	}
+
+	@Override
+	public void deleteMember(String id) {
+		memberDao.deleteMember(id);
+	}
+
+	@Override
+	public void updateMember(MemberVO vo) {
+        memberDao.updateMember(vo);
+    }
+	
+	public boolean checkPasswd (String id, String passwd) {
+		return memberDao.checkPasswd(id,passwd);
 	}
 
 }

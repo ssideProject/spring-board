@@ -77,7 +77,7 @@ public class BoardController {
 		return "redirect:list.do"; // "redirect:/list.do"와다른것인가??
 	}
 	
-	//게시글 살세내용 조회+ 조회수가 올라간다.
+	//게시글 상세내용 조회+ 조회수가 올라간다.
 	//@RequestParam : get/post 방식으로 전달된 변수 1개
 	//HttpSession 세션 객체
 	@RequestMapping(value="view.do", method = RequestMethod.GET)
