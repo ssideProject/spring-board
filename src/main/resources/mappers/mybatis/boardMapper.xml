@@ -6,7 +6,7 @@
 	<select id = "listAll" resultType = "com.app.spring.model.dto.BoardVO">
 		<!-- 목록조회 및 페이징 전체 쿼리 -->
 		<include refid = "pagingHeader"></include>
-        SELECT rownum, bno,title,content, B.regdate, viewcnt, userName
+        SELECT rownum, bno,title,content, B.regdate, viewcnt, userName, (SELECT count(*) FROM tbl_reply WHERE bno=b.bno) as recnt
         FROM TBL_BOARD B, MEMBER M       
     	<include refid="search"></include>
         ORDER BY bno desc, B.regdate desc

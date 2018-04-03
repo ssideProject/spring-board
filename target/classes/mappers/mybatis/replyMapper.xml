@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 다른 mapper와 중복되지 않고록 네임스페이스 기재 -->
+<mapper namespace="reply">
+	<insert id = "insertReply">
+		INSERT INTO tbl_reply(rno, bno,replytext, replyer)
+		values(reply_seq.nextval, #{bno}, #{replytext}, #{replyer})
+	</insert>
+	
+	<select id = "listReply" resultType="com.app.spring.model.dto.ReplyVO">
+		select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
+		FROM tbl_reply r, tbl_member m
+		WHERE r.reply = m.id AND bno=#{bno}
+		ORDER BY rno
+	</select>
+
+</mapper>

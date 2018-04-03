@@ -160,8 +160,16 @@
                 </exclusion>
             </exclusions>
             <scope>runtime</scope>
+            
         </dependency>
-
+		<!-- REST 댓글달기를 위해서 추가해놈. -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.8.6</version>
+		</dependency>
+		
+	
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
