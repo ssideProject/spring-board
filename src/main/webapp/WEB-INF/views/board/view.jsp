@@ -23,16 +23,12 @@
 					alert("댓글이 등록되었습니다.");
 					listReply2();
 				}
-			})
-			
-		})
-	})
+			});
+		});
 
-
-	$(document).ready(function(){
-		//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
-		$("#btnList").click(function(){
-			location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
+	//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
+	$("#btnList").click(function(){
+		location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
 	});
 
     $(document).ready(function(){
@@ -69,8 +65,7 @@
             // 폼에 입력한 데이터를 서버로 전송
             document.form1.submit();
         });
-   		});
-	 });
+    });
 	
 	//Controller방식
 	//댓글 목록1
@@ -89,7 +84,7 @@
 	//댓글목록2(json)
 	function listReply2(){
 		$.ajax({
-			type."get",
+			type:"get",
 			//contentType:"application/json",  --> RestController이기 때문에 생략가능
 			url:"${path }/reply/listJson.do?bno=${dto.bno}",
 			success:function (result){
