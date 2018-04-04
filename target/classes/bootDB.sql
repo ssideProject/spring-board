@@ -32,6 +32,7 @@ alter table TBL_board add(USERNAME varchar(50));
 
 create table tbl_reply(
 	bno integer not null,
+	rno integer not null,
 	replytext varchar(500) not null,
 	replyer varchar(100) not null,
 	userName varchar(100) not null,
@@ -40,15 +41,12 @@ create table tbl_reply(
 	CONSTRAINT PK_reply PRIMARY KEY(bno)
 )
 
+create SEQUENCE reply_seq start with 1 increment by 1 maxvalue 1000;
 
+select * from TBL_REPLY;
 
-private Integer rno;        // 댓글 번호
-    private Integer bno;        // 게시글 번호
-    private String replytext;    // 댓글 내용
-    private String replyer;        // 댓글 작성자
-    private String userName;    // 댓글 작성자의 이름(회원의 이름)
-    private Date regdate;        // 댓글 작성일자
-    private Date updatedate;
+select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
+		FROM tbl_reply r, member m;
 
 
 

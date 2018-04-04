@@ -10,7 +10,8 @@ public class ReplyVO {
     private String userName;    // 댓글 작성자의 이름(회원의 이름)
     private Date regdate;        // 댓글 작성일자
     private Date updatedate;    // 댓글 수정일자
-	public Integer getRno() {
+	
+    public Integer getRno() {
 		return rno;
 	}
 	public void setRno(Integer rno) {

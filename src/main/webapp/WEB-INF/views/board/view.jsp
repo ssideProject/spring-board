@@ -17,7 +17,7 @@
 			var param = "replytext="+replytext+"&bno="+bno;
 			$.ajax({
 				type: "post",
-				url: "${path}/reply/inset.do",
+				url: "${path}/reply/insert.do",
 				data:param,
 				success: function(){
 					alert("댓글이 등록되었습니다.");
@@ -28,19 +28,18 @@
 
 	//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
 	$("#btnList").click(function(){
-		location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
+		 location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
 	});
 
-    $(document).ready(function(){
-        $("#btnDelete").click(function(){
-            if(confirm("삭제하시겠습니까?")){
-                document.form1.action = "${path}/board/delete.do";
-                document.form1.submit();
+    $("#btnDelete").click(function(){
+    	if(confirm("삭제하시겠습니까?")){
+			document.form1.action = "${path}/board/delete.do";
+			document.form1.submit();
             }
      });
         
-        $("#btnUpdete").click(function(){
-            //var title = document.form1.title.value; ==> name속성으로 처리할 경우
+	 $("#btnUpdete").click(function(){
+			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
             //var content = document.form1.content.value;
             //var writer = document.form1.writer.value;
             var title = $("#title").val();
@@ -97,7 +96,7 @@
 					output += result[i].replytext+"</td>";
 					output += "<tr>";
 				}
-				output += </table>
+				output += "</table>";
 				$("#listReply").html(output);
 			}	
 		});
