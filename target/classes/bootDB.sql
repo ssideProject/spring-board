@@ -29,17 +29,20 @@ SELECT bno,title,content, b.regdate, viewcnt, userName
 
 alter table TBL_board add(USERNAME varchar(50));
 
-
+// not null 처리를 해버리니 모두다 안들어간다.. 무슨문제인거지?
 create table tbl_reply(
-	bno integer not null,
-	rno integer not null,
-	replytext varchar(500) not null,
-	replyer varchar(100) not null,
-	userName varchar(100) not null,
+	bno integer,
+	rno integer,
+	replytext varchar(500),
+	replyer varchar(100),
+	userName varchar(100),
 	regdate Date default SYSDATE,
 	updatedate Date default SYSDATE,
-	CONSTRAINT PK_reply PRIMARY KEY(bno)
+	CONSTRAINT PK_reply PRIMARY KEY(rno)
 )
+
+
+drop table tbl_reply;
 
 create SEQUENCE reply_seq start with 1 increment by 1 maxvalue 1000;
 
@@ -47,6 +50,11 @@ select * from TBL_REPLY;
 
 select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
 		FROM tbl_reply r, member m;
+		
+select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
+		FROM tbl_reply r, member m
+		WHERE r.replyer = m.id AND bno=12
+		ORDER BY rno;	
 
 
 
