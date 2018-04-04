@@ -69,7 +69,14 @@ ${map.count}개의 게시물이 있습니다.
     <c:forEach var="row" items="${map.list}">
     <tr>
         <td>${row.bno}</td>
-        <td><a href="${path}/board/view.do?bno=${row.bno}&curPage=${map.boardPager.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}">${row.title}</a></td>
+        <td>
+        	<a href="${path}/board/view.do?bno=${row.bno}&curPage=${map.boardPager.curPage}&searchOption=${map.searchOption}&keyword=${map.keyword}">${row.title}</a>
+        	<!-- 댓글이 있으면 게시들 이름 옆에 출력하기 -->
+        	<c:if test="${row.recnt > 0 }">
+	        	<span style ="color:red;">(${row.recnt })
+	        	</span>
+        	</c:if>
+        </td>
         <td>${row.userName}</td>
         <td>
             <!-- 원하는 날짜형식으로 출력하기 위해 fmt태그 사용 -->

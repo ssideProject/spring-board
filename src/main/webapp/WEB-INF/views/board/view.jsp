@@ -92,7 +92,7 @@
 			type."get",
 			//contentType:"application/json",  --> RestController이기 때문에 생략가능
 			url:"${path }/reply/listJson.do?bno=${dto.bno}",
-			success function (result){
+			success:function (result){
 				console.log(result);
 				var output = "<table>";
 				for(var i in result){
@@ -157,5 +157,16 @@
     	<button type="button" id ="btnList">목록</button>
     </div>
 </form>
+
+<div style = "width:650px; text-ailan:center;">
+	<br>
+	<!--  로그인한 회원에게만 댓들 작성 폼이 보이게 처리 -->
+	<c:if test ="${sessionScope.id != null }">
+		<textarea rows="5" cols ="80" id="replytext" placeholder="댓글을 작성해주세요"></textarea>
+		<br>
+		<button type ="button" id = "btnReply">댓글작성</button>
+	</c:if>
+</div>
+<div id ="listReply"></div>
 </body>
 </html>
