@@ -8,50 +8,28 @@
 <script>
 	$(document).ready(function(){
 		listReply("1"); //댓글 목록 불러오기
-		//listReply2(); //이 함수는 document밖에 있어서 이렇게 선언해줘야하나보다.
+		//listReply2(); //이 함수는 document밖에 있어서 이렇게 선언해줘야하나보다. json리턴방식
 		
-		//댓글쓰기 버튼 ajax로 처리
 		$("#btnReply").click(function(){
-            var replytext=$("#replytext").val();
-            if(replytext == ""){
-            	alert("댓글을 입력해주세요.");
-            	document.replytext.focus();
-            	return;
-            }
-            var bno="${dto.bno}";
-            //비밀 여부 체크
-            var secretReply ="n";
-            //태그.is(":속성") ---> 체크여부 ture/false
-             if( $("#secretReply").is(":checked") ){
-            	secretReply ="y";
-            }
-            alert(secretReply);    
-            var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
-            $.ajax({                
-                type: "post",
-                url: "${path}/reply/insert.do",
-                data: param,
-                success: function(){
-                    alert("댓글이 등록되었습니다.");
-                    //listReply2();
-                    listReply("1");
-                }
-            });
-        });
-
-	//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
-	$("#btnList").click(function(){
-		 location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
-	});
-
-    $("#btnDelete").click(function(){
-    	if(confirm("삭제하시겠습니까?")){
-			document.form1.action = "${path}/board/delete.do";
-			document.form1.submit();
-            }
-     });
-        
-	 $("#btnUpdete").click(function(){
+			//reply(); 폼데이터로 입력.
+			replyJson();
+		});
+		
+		//게시글 목록 버튼 클릭 : 버튼클릭시 상세보기화면에 있던 체이지, 검색옵션 키뭐드 값을 가지고 이동.
+		$("#btnList").click(function(){
+			 location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
+		});
+		
+		//게시글 삭제 버튼
+		$("#btnDelete").click(function(){
+	    	if(confirm("삭제하시겠습니까?")){
+				document.form1.action = "${path}/board/delete.do";
+				document.form1.submit();
+	            }
+     	});
+		
+		//게시글 수정 버튼
+		$("#btnUpdete").click(function(){
 			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
             //var content = document.form1.content.value;
             //var writer = document.form1.writer.value;
@@ -76,9 +54,60 @@
             document.form1.action="${path}/board/update.do";
             // 폼에 입력한 데이터를 서버로 전송
             document.form1.submit();
-        });
-    });
+       	});
+	});
+		
+	//댓글쓰기 (json 방식)
+	function replyJson(){
+		var replytext = $("#replytext").val();
+		var bno  = "${dto.bno}";
+		var secretReply = "n";
+		//태그.is(":속성")   ->> 체크여부 ture/false
+		if($("#secretReply").is(":checked")){
+			secretReply = "y";
+		}
+		
+		$.ajax({
+			type:"post",
+			url:"${path}/reply/insertRest.do",
+			headers:{"content-type" : "application/json"},
+			dateType: "text",
+			//param형식보다 편하다.
+			data:JSON.stringify({
+				bno : bno,
+				replytext : replytext,
+				secretReply : secretReply
+			}),
+			success: function(){
+				alert("댓글이 등록되었다.");
+				//listReply2();
+				listReply("1");
+			}
+		});
+	}
 	
+    // 댓글 쓰기(폼데이터 방식)
+    function reply(){
+        var replytext=$("#replytext").val();
+        var bno="${dto.bno}"
+        var secretReply = "n";
+        if( $("#secretReply").is(":checked") ){
+            secretReply = "y";
+        }
+        var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
+        $.ajax({                
+            type: "post",
+            url: "${path}/reply/insert.do",
+            data: param,
+            success: function(){
+                alert("댓글이 등록되었습니다.");
+                //listReply2();
+                listReply("1");
+            }
+        });
+    }
+	
+    
 	//Controller방식
 	//댓글 목록1
 	function listReply(num){
@@ -101,13 +130,13 @@
             url: "${path}/reply/listJson.do?bno=${dto.bno}",
             success: function(result){
                 console.log(result);
-                var output = "<table>";
+                var output = "<table border='1'>";
                 for(var i in result){
                     output += "<tr>";
                     output += "<td>"+result[i].userName;
                     output += "("+changeDate(result[i].regdate)+")<br>";
                     output += result[i].replytext+"</td>";
-                    output += "<tr>";
+                    output += "</tr>";
                 }
                 output += "</table>";
                 $("#listReply").html(output);
