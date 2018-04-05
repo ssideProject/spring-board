@@ -10,21 +10,20 @@
 		//listReply(); 댓글 목록 불러오기
 		listReply2();
 		
-		//댓글쓰기 버튼 클릭 이벤트 (ajax로 처리)
 		$("#btnReply").click(function(){
-			var replytext =$("replytext").val();
-			var bno="${dto.bno}"
-			var param = "replytext="+replytext+"&bno="+bno;
-			$.ajax({
-				type: "post",
-				url: "${path}/reply/insert.do",
-				data:param,
-				success: function(){
-					alert("댓글이 등록되었습니다.");
-					listReply2();
-				}
-			});
-		});
+            var replytext=$("#replytext").val();
+            var bno="${dto.bno}";
+            var param="replytext="+replytext+"&bno="+bno;
+            $.ajax({                
+                type: "post",
+                url: "${path}/reply/insert.do",
+                data: param,
+                success: function(){
+                    alert("댓글이 등록되었습니다.");
+                    listReply2();
+                }
+            });
+        });
 
 	//목록 버튼 클릭이벤트: 버튼 클릭시 상세보기 화면에 있던 페이지, 검색옵션, 키워드 값을 가지고 목록으로 이동
 	$("#btnList").click(function(){
@@ -79,28 +78,28 @@
 		});
 	}
 	
-	//RestController방식 (json)
-	//댓글목록2(json)
-	function listReply2(){
-		$.ajax({
-			type:"get",
-			//contentType:"application/json",  --> RestController이기 때문에 생략가능
-			url:"${path }/reply/listJson.do?bno=${dto.bno}",
-			success:function (result){
-				console.log(result);
-				var output = "<table>";
-				for(var i in result){
-					output += "<tr>";
-					output += "<td>" +result[i].userName;
-					output += "(" +changeDate(result[i].regdate)+")<br>";
-					output += result[i].replytext+"</td>";
-					output += "<tr>";
-				}
-				output += "</table>";
-				$("#listReply").html(output);
-			}	
-		});
-	}
+	// RestController방식 (Json)
+    // **댓글 목록2 (json)
+    function listReply2(){
+        $.ajax({
+            type: "get",
+            //contentType: "application/json", ==> 생략가능(RestController이기때문에 가능)
+            url: "${path}/reply/listJson.do?bno=${dto.bno}",
+            success: function(result){
+                console.log(result);
+                var output = "<table>";
+                for(var i in result){
+                    output += "<tr>";
+                    output += "<td>"+result[i].userName;
+                    output += "("+changeDate(result[i].regdate)+")<br>";
+                    output += result[i].replytext+"</td>";
+                    output += "<tr>";
+                }
+                output += "</table>";
+                $("#listReply").html(output);
+            }
+        });
+    }
 	
 	// **날짜 변환 함수 작성
     function changeDate(date){

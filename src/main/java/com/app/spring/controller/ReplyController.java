@@ -36,8 +36,10 @@ public class ReplyController {
 	
 	@RequestMapping("insert.do")
 	public void insert(@ModelAttribute ReplyVO vo, HttpSession session) {
-		String userId = (String) session.getAttribute("id");
-		vo.setReplyer(userId);
+		String id = (String) session.getAttribute("id");
+		String name = (String) session.getAttribute("name");
+		vo.setReplyer(id);
+		vo.setUserName(name);
 		replyService.create(vo);
 	}
 	
