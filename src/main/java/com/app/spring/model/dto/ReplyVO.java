@@ -10,12 +10,26 @@ public class ReplyVO {
     private String userName;    // 댓글 작성자의 이름(회원의 이름)
     private Date regdate;        // 댓글 작성일자
     private Date updatedate;    // 댓글 수정일자
+    private String secretReply;    // **댓글 숨김 유무 추가
+    private String writer;        // **게시글의 작성자 추가
 	
     public Integer getRno() {
 		return rno;
 	}
 	public void setRno(Integer rno) {
 		this.rno = rno;
+	}
+	public String getSecretReply() {
+		return secretReply;
+	}
+	public void setSecretReply(String secretReply) {
+		this.secretReply = secretReply;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 	public Integer getBno() {
 		return bno;

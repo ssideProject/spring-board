@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.app.spring.model.dto.ReplyVO;
 import com.app.spring.service.ReplyService;
+import com.app.spring.service.board.ReplyPager;
 
 
 
@@ -29,30 +30,40 @@ import com.app.spring.service.ReplyService;
 @RestController
 @RequestMapping("/reply/*")
 public class ReplyController {
-	
-	
+
 	@Inject
 	ReplyService replyService;
 	
+	//댓글입력
 	@RequestMapping("insert.do")
-	public void insert(@ModelAttribute ReplyVO vo, HttpSession session) {
+	public void insert(@ModelAttribute ReplyVO vo, HttpSession session, @RequestParam String secretReply) {
 		String id = (String) session.getAttribute("id");
 		String name = (String) session.getAttribute("name");
 		vo.setReplyer(id);
 		vo.setUserName(name);
+		vo.setSecretReply(secretReply);
 		replyService.create(vo);
 	}
 	
-	
+	//댓글목록 (controller방식: view를 리턴한다.)
 	@RequestMapping("list.do")
-	public ModelAndView list(@RequestParam int bno, ModelAndView mav) {
-		List<ReplyVO> list = replyService.list(bno);
+	public ModelAndView list(@RequestParam int bno, @RequestParam(defaultValue="1") int curPage,
+							ModelAndView mav, HttpSession session) {
+		//페이징 처리
+		int count = replyService.count(bno);
+		ReplyPager replyPager = new ReplyPager(count,curPage);
+		int start = replyPager.getPageBegin();
+		int end = replyPager.getPageEnd();
+		List<ReplyVO> list = replyService.list(bno,start,end,session);
+		
 		//뷰이름지정
 		mav.setViewName("board/replyList");
 		//뷰에 전달할 데이터 지정
 		mav.addObject("list", list);
+		mav.addObject("replyPager", replyPager);
 		return mav;
 	}
+	
 	
 	@RequestMapping("listJson.do")
 	@ResponseBody // 리턴데이터를 Json으로 변환(생략가능)

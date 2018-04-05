@@ -5,8 +5,9 @@ import java.util.List;
 import com.app.spring.model.dto.ReplyVO;
 
 public interface ReplyDAO {
-	public List<ReplyVO> list(Integer bno);
+	public List<ReplyVO> list(Integer bno, int start, int end);
 	public void create(ReplyVO vo);
 	public void update(ReplyVO vo);
 	public void delete(Integer rno);
+	public int count(int bno);
 }

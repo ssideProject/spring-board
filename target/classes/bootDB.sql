@@ -9,7 +9,7 @@ ALTER TABLE member
 MODIFY (id varchar2(200) );
 
 
-SELECT bno,title,content, b.regdate, viewcnt, writer
+SELECT rownum,bno,title,content, b.regdate, viewcnt, writer
         FROM TBL_BOARD B, MEMBER M
         where B.writer = M.id;
         
@@ -17,7 +17,7 @@ select * from TBL_BOARD;
 select * from MEMBER;
 
 
-SELECT bno,title,content, b.regdate, viewcnt, userName
+SELECT rownum, bno,title,content, b.regdate, viewcnt, userName
         FROM TBL_BOARD B, MEMBER M
         WHERE B.writer = M.id AND
         title like '%%';
@@ -29,7 +29,7 @@ SELECT bno,title,content, b.regdate, viewcnt, userName
 
 alter table TBL_board add(USERNAME varchar(50));
 
-// not null 처리를 해버리니 모두다 안들어간다.. 무슨문제인거지?
+-- not null 처리를 해버리니 모두다 안들어간다.. 무슨문제인거지?
 create table tbl_reply(
 	bno integer,
 	rno integer,
@@ -40,9 +40,6 @@ create table tbl_reply(
 	updatedate Date default SYSDATE,
 	CONSTRAINT PK_reply PRIMARY KEY(rno)
 )
-
-
-drop table tbl_reply;
 
 create SEQUENCE reply_seq start with 1 increment by 1 maxvalue 1000;
 
@@ -56,147 +53,27 @@ select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
 		WHERE r.replyer = m.id AND bno=12
 		ORDER BY rno;	
 
+		
+--------------------------------------------------------04/05
 
+SELECT *
+FROM(
+	SELECT ROWNUM as rn, A.*
+	FROM( SELECT r.rno, bno, r.replytext, r.replyer, secretReply, r.regdate, r.updatedate, m.Name, (SELECT writer FROM tbl_board WHERE bno=r.bno) AS writer
+			FROM tbl_reply r, member m
+			WHERE
+			r.replyer=m.id AND bno= 37
+			order by rno
+		)A
+	)WHERE rn BETWEEN 1 AND 5
+-- 위의 SQL을 해석해보면 댓글과 맴버테이블에서 게시물 번호에 맞는 잡탕구리들을 가지고와서
+-- 그 갯수를 ROWNUM이라고 말하는것같으며 잡탕구리들을 A라고 칭하고
+-- 게 중에서 시작와 끝 번호에 맞는 레코드들을 불러오는것같다.
+-- rownum은 오라클에서 지원하는 가상칼럼이였다
+	
+alter table tbl_reply modify( secretReply varchar(1) default null);
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
---        
+update tbl_reply set secretReply='n';
+	
+	
+	

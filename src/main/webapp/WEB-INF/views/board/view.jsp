@@ -7,20 +7,34 @@
 <%@ include file="../include/header.jsp" %>
 <script>
 	$(document).ready(function(){
-		//listReply(); 댓글 목록 불러오기
-		listReply2();
+		listReply("1"); //댓글 목록 불러오기
+		//listReply2(); //이 함수는 document밖에 있어서 이렇게 선언해줘야하나보다.
 		
+		//댓글쓰기 버튼 ajax로 처리
 		$("#btnReply").click(function(){
             var replytext=$("#replytext").val();
+            if(replytext == ""){
+            	alert("댓글을 입력해주세요.");
+            	document.replytext.focus();
+            	return;
+            }
             var bno="${dto.bno}";
-            var param="replytext="+replytext+"&bno="+bno;
+            //비밀 여부 체크
+            var secretReply ="n";
+            //태그.is(":속성") ---> 체크여부 ture/false
+             if( $("#secretReply").is(":checked") ){
+            	secretReply ="y";
+            }
+            alert(secretReply);    
+            var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
             $.ajax({                
                 type: "post",
                 url: "${path}/reply/insert.do",
                 data: param,
                 success: function(){
                     alert("댓글이 등록되었습니다.");
-                    listReply2();
+                    //listReply2();
+                    listReply("1");
                 }
             });
         });
@@ -43,7 +57,7 @@
             //var writer = document.form1.writer.value;
             var title = $("#title").val();
             var content = $("#content").val();
-            var writer = $("#writer").val();
+            //var writer = $("#writer").val();
             if(title == ""){
                 alert("제목을 입력하세요");
                 document.form1.title.focus();
@@ -67,10 +81,10 @@
 	
 	//Controller방식
 	//댓글 목록1
-	function listReply(){
+	function listReply(num){
 		$.ajax({
 			type:"get",
-			url: "{path/reply/list.do?bno=${dto.bno}}",
+			url: "${path}/reply/list.do?bno=${dto.bno}&curPage="+num,
 			success:function(result){
 				//responseText가 result에 저장됨
 				$("#listReply").html(result);
@@ -155,8 +169,9 @@
 	<br>
 	<!--  로그인한 회원에게만 댓들 작성 폼이 보이게 처리 -->
 	<c:if test ="${sessionScope.id != null }">
-		<textarea rows="5" cols ="80" id="replytext" placeholder="댓글을 작성해주세요"></textarea>
+		<textarea rows="5" cols ="80" id ="replytext" placeholder="댓글을 작성해주세요"></textarea>
 		<br>
+		<input type ="checkbox" id ="secretReply">비밀댓글
 		<button type ="button" id = "btnReply">댓글작성</button>
 	</c:if>
 </div>
