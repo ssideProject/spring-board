@@ -4,10 +4,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.spring.model.dao.BoardDAO;
+import com.app.spring.model.dao.BoardDAO; 
 import com.app.spring.model.dto.BoardVO;
 
 @Service("bookService")
@@ -16,6 +17,7 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired // @Inject
 	BoardDAO boardDao;
 	
+
 	@Override
 	public void create(BoardVO vo) throws Exception {
 		String title =vo.getTitle();
@@ -40,11 +42,13 @@ public class BoardServiceImpl implements BoardService {
 		boardDao.create(vo);
 
 	}
+	
 
 	@Override
 	public BoardVO read(int bno) throws Exception {
 		return boardDao.read(bno);
 	}
+
 
 	@Override
 	public void update(BoardVO vo) throws Exception {
@@ -52,12 +56,14 @@ public class BoardServiceImpl implements BoardService {
 
 	}
 
+	
 	@Override
 	public void delete(int bno) throws Exception {
 		boardDao.delete(bno);
 
 	}
 
+	
 	@Override
 	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception {
 	    return boardDao.listAll( start, end, searchOption, keyword);
@@ -82,7 +88,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 	
-		
+
 	public int countArticle(String searchOption, String keyword) throws Exception {
 	    return boardDao.countArticle(searchOption, keyword);
 	}

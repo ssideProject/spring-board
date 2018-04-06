@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,11 +23,13 @@ import com.app.spring.service.board.BoardPager;
 @RequestMapping("/board/*")
 public class BoardController {
 	
+	
 	@Autowired //@Inject도 가능하다.
 	BoardService boardService;
 	
 	
 	//게시글 목록
+	
 	@RequestMapping("list.do")//파라매터를 default값을 준 이유를 생각해보기 triger로 쓰이고 있다.
 	public ModelAndView list(@RequestParam(defaultValue ="title") String searchOption,
 								@RequestParam(defaultValue="") String keyword,
@@ -60,6 +63,7 @@ public class BoardController {
 	
 	
 	//게시글 작성 화면
+	
 	@RequestMapping(value="write.do", method=RequestMethod.GET) //@RequestMapping("board/write.do")
 	public String write(@ModelAttribute BoardVO vo) {
 		return "board/write";
@@ -67,6 +71,7 @@ public class BoardController {
 	
 	
 	//게시글 작성 처리
+	
 	@RequestMapping(value="insert.do", method = RequestMethod.POST)
 	public String insert(@ModelAttribute BoardVO vo, HttpSession session) throws Exception{
 		String writer = (String) session.getAttribute("id");
@@ -80,6 +85,7 @@ public class BoardController {
 	//게시글 상세내용 조회+ 조회수가 올라간다.
 	//@RequestParam : get/post 방식으로 전달된 변수 1개
 	//HttpSession 세션 객체
+	
 	@RequestMapping(value="view.do", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam int bno, HttpSession session) throws Exception{
 		boardService.increaseViewcnt(bno, session); //조회수를 증가해주는것인데 왜 세션이 같이 넘어가는거지?
@@ -90,6 +96,7 @@ public class BoardController {
 	}
 	
 	//게시글 수정
+	
 	@RequestMapping(value = "update.do", method = RequestMethod.POST)
 	public String update(@ModelAttribute BoardVO vo)throws Exception{
 		boardService.update(vo);
