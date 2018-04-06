@@ -15,23 +15,26 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	@Inject
 	ReplyDAO replyDao;
+	
+	//1. 댓글입력
+	public void create(ReplyVO vo) {
+		replyDao.create(vo);
+	}
 
-	@Override
+	//2. 댓글목록
     public List<ReplyVO> list(Integer bno, int start, int end, HttpSession session) {
         List<ReplyVO> items = replyDao.list(bno, start, end);
         // 세션에서 현재 사용자 id값 저장
         String Id = (String) session.getAttribute("id");
         for(ReplyVO vo : items){
-            
             if(vo.getSecretReply().equals("y")){
                 if(Id == null){ 
-                    vo.setReplytext("비밀 댓글입니다.1");
+                    vo.setReplytext("[로그인 안해서 안보여]");
                 } else { 
                     String writer = vo.getWriter(); 
-                    String replyer = vo.getReplyer(); 
-                    
+                    String replyer = vo.getReplyer();
                     if(!Id.equals(writer) && !Id.equals(replyer)) {
-                        vo.setReplytext("비밀 댓글입니다.2");
+                        vo.setReplytext("[내가 쓴 댓글이 아니야]");
                     }
                 }
             }
@@ -39,27 +42,24 @@ public class ReplyServiceImpl implements ReplyService {
         return items; 
     }
 	
-
-	@Override
-	public void create(ReplyVO vo) {
-		replyDao.create(vo);
-		
-	}
-
+    
+    //3. 댓글 상세보기
+    public ReplyVO detail(Integer rno) {
+    	return replyDao.detail(rno);
+    }
+    
 	@Override
 	public void update(ReplyVO vo) {
-		//
-		
+		replyDao.update(vo);
 	}
 
 	@Override
-	public void delete(ReplyVO vo) {
-		// TODO Auto-generated method stub
-		
+	public void delete(Integer rno) {
+		replyDao.delete(rno);
 	}
 
 	@Override
-	public int count(int bno) {
+	public int count(Integer bno) {
 		return replyDao.count(bno);
 	}
 

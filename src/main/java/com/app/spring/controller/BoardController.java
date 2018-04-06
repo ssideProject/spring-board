@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.app.spring.model.dto.BoardVO;
 import com.app.spring.service.BoardService;
+import com.app.spring.service.ReplyService;
 import com.app.spring.service.board.BoardPager;
 
 @Controller
@@ -26,6 +27,9 @@ public class BoardController {
 	
 	@Autowired //@Inject도 가능하다.
 	BoardService boardService;
+	
+	@Autowired // ReplyService 주입(ReplyService의 댓글의 갯수를 구하는 메서드 호출하기 위해)
+    ReplyService replyService;
 	
 	
 	//게시글 목록
@@ -87,11 +91,17 @@ public class BoardController {
 	//HttpSession 세션 객체
 	
 	@RequestMapping(value="view.do", method = RequestMethod.GET)
-	public ModelAndView view(@RequestParam int bno, HttpSession session) throws Exception{
+	public ModelAndView view(@RequestParam int bno, @RequestParam int curPage, @RequestParam String searchOption,
+								@RequestParam String keyword, HttpSession session) throws Exception{
 		boardService.increaseViewcnt(bno, session); //조회수를 증가해주는것인데 왜 세션이 같이 넘어가는거지?
 		ModelAndView mav = new ModelAndView(); // 모델엔뷰 객체 생성 (내부확인 해보기)
 		mav.setViewName("board/view"); // 뷰의 이름
-		mav.addObject("dto", boardService.read(bno)); // 오브젝트 저장.
+		// 댓글의 수를 맵에 저장 : 댓글이 존재하는 게시물의 삭제처리 방지하기 위해 
+        mav.addObject("count", replyService.count(bno)); 
+        mav.addObject("dto", boardService.read(bno));
+        mav.addObject("curPage", curPage);
+        mav.addObject("searchOption", searchOption);
+        mav.addObject("keyword", keyword); // 오브젝트 저장.
 		return mav;
 	}
 	

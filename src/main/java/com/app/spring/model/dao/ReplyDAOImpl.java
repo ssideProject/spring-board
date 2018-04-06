@@ -33,18 +33,22 @@ public class ReplyDAOImpl implements ReplyDAO {
 
 	@Override
 	public void update(ReplyVO vo) {
-		// TODO Auto-generated method stub
-
+		sqlSession.update("reply.updateReply", vo);
 	}
 
 	@Override
 	public void delete(Integer rno) {
-		// TODO Auto-generated method stub
+		sqlSession.delete("reply.deleteReply", rno);
 
 	}
 
 	@Override
-	public int count(int bno) {
+	public ReplyVO detail(Integer rno) {
+		return sqlSession.selectOne("reply.detailReply", rno);
+	}
+
+	@Override
+	public int count(Integer bno) {
 		return sqlSession.selectOne("reply.countReply", bno);
 	}
 

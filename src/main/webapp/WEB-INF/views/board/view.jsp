@@ -7,28 +7,7 @@
 <%@ include file="../include/header.jsp" %>
 <script>
 	$(document).ready(function(){
-		listReply("1"); //댓글 목록 불러오기
-		//listReply2(); //이 함수는 document밖에 있어서 이렇게 선언해줘야하나보다. json리턴방식
-		
-		$("#btnReply").click(function(){
-			//reply(); 폼데이터로 입력.
-			replyJson();
-		});
-		
-		//게시글 목록 버튼 클릭 : 버튼클릭시 상세보기화면에 있던 체이지, 검색옵션 키뭐드 값을 가지고 이동.
-		$("#btnList").click(function(){
-			 location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
-		});
-		
-		//게시글 삭제 버튼
-		$("#btnDelete").click(function(){
-	    	if(confirm("삭제하시겠습니까?")){
-				document.form1.action = "${path}/board/delete.do";
-				document.form1.submit();
-	            }
-     	});
-		
-		//게시글 수정 버튼
+		// 1. 게시글 수정 버튼
 		$("#btnUpdete").click(function(){
 			//var title = document.form1.title.value; ==> name속성으로 처리할 경우
             //var content = document.form1.content.value;
@@ -55,9 +34,64 @@
             // 폼에 입력한 데이터를 서버로 전송
             document.form1.submit();
        	});
-	});
+	
+	
+		// 2. 게시글 삭제 버튼
+		$("#btnDelete").click(function(){
+			/*var count  = "${count}";
+    		if (count > 0){
+    			alert("댓글이 있는 게시물은 삭제 X")
+    			return;
+    		}*/ //데이터 베이스에 on delete cascade를 적용시켜서 게시물이 지워지면 댓글도 지워지게했당.
+    		 
+    	    if(confirm("삭제하시겠습니까?")){
+    	        document.form1.action = "${path}/board/delete.do";
+    	        document.form1.submit();
+    	    }
+	 	});
 		
-	//댓글쓰기 (json 방식)
+		// 3. 게시글 목록 버튼 클릭 : 버튼클릭시 상세보기화면에 있던 체이지, 검색옵션 키뭐드 값을 가지고 이동.
+		$("#btnList").click(function(){
+			 location.href="${path}/board/list.do?curPage=${curPage}&searchOption=${searchOption}&keyword=${keyword}";
+		});
+		
+		 //댓글관련
+		// 1. 댓글입력
+		$("#btnReply").click(function(){
+			//reply(); 폼데이터로 입력.
+			replyJson();
+		});
+		 
+		  // 2. 댓글목록
+		//listReply("1"); --> 댓글 목록 불러오기
+        //listReply2(); --> json 리턴방식
+        listReplyRest("1"); // rest방식
+        
+	 
+	});
+	
+	// 1_1. 댓글 쓰기(폼데이터 방식)
+    function reply(){
+        var replytext=$("#replytext").val();
+        var bno="${dto.bno}"
+        var secretReply = "n";
+        if( $("#secretReply").is(":checked") ){
+            secretReply = "y";
+        }
+        var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
+        $.ajax({                
+            type: "post",
+            url: "${path}/reply/insert.do",
+            data: param,
+            success: function(){
+                alert("댓글이 등록되었습니다.");
+                //listReply2();
+                listReply("1");
+            }
+        });
+    }
+		
+	// 1_2. 댓글쓰기 (json 방식)
 	function replyJson(){
 		var replytext = $("#replytext").val();
 		var bno  = "${dto.bno}";
@@ -79,37 +113,17 @@
 				secretReply : secretReply
 			}),
 			success: function(){
-				alert("댓글이 등록되었다.");
-				//listReply2();
-				listReply("1");
+				alert("JSON 방식 댓글이 등록되었다.");
+				// 댓글 입력 완료후 댓글 목록 불러오기 함수 호출
+                //listReply("1");    // 전통적인 Controller방식
+                //listReply2();     // json리턴 방식
+				listReplyRest("1");
 			}
 		});
 	}
 	
-    // 댓글 쓰기(폼데이터 방식)
-    function reply(){
-        var replytext=$("#replytext").val();
-        var bno="${dto.bno}"
-        var secretReply = "n";
-        if( $("#secretReply").is(":checked") ){
-            secretReply = "y";
-        }
-        var param="replytext="+replytext+"&bno="+bno+"&secretReply="+secretReply;
-        $.ajax({                
-            type: "post",
-            url: "${path}/reply/insert.do",
-            data: param,
-            success: function(){
-                alert("댓글이 등록되었습니다.");
-                //listReply2();
-                listReply("1");
-            }
-        });
-    }
-	
-    
-	//Controller방식
-	//댓글 목록1
+	/*
+	// 2_1. 댓글 목록 - controller방식
 	function listReply(num){
 		$.ajax({
 			type:"get",
@@ -121,8 +135,7 @@
 		});
 	}
 	
-	// RestController방식 (Json)
-    // **댓글 목록2 (json)
+    // 2_2. 댓글목록 - RestDontroller를 이용 Json 형식으로 리턴
     function listReply2(){
         $.ajax({
             type: "get",
@@ -130,7 +143,7 @@
             url: "${path}/reply/listJson.do?bno=${dto.bno}",
             success: function(result){
                 console.log(result);
-                var output = "<table border='1'>";
+                var output = "<table>";
                 for(var i in result){
                     output += "<tr>";
                     output += "<td>"+result[i].userName;
@@ -144,7 +157,7 @@
         });
     }
 	
-	// **날짜 변환 함수 작성
+	// 2_2. 날짜 변환 함수 작성
     function changeDate(date){
         date = new Date(parseInt(date));
         year = date.getFullYear();
@@ -156,8 +169,48 @@
         strDate = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
         return strDate;
     }
+	*/
+	
+	
+	// 2_3. 댓글목록 - REST방식
+	function listReplyRest(num){
+		$.ajax({
+			type : "get",
+			url : "${path}/reply/list/${dto.bno}/"+num,
+			success : function(result){
+				//responseText가 result에 저장됨.
+				$("#listReply").html(result);
+			}
+			
+		});
+	}
+	
+	//댓글 수정회면 생성 함수
+	function showReplyModify(rno){
+	$.ajax({
+		type : "get",
+		url : "${path}/reply/detail/"+rno,
+		success : function(result){
+			$("#modifyReply").html(result);
+			//태크.css("속성", "값")
+			$("#modifyReply").css("visibility", "visible");
+		}
+	})
+	}
 	
 </script>
+
+<style>
+ #modifyReply{
+ 	width : 600px;
+ 	height : 130px;
+ 	background-color : gray;
+ 	padding : 10px;
+ 	z-index : 10;
+ 	visibility : hidden;
+ }
+</style>
+
 </head>
 <body>
 <%@ include file="../include/menu.jsp" %>

@@ -4,12 +4,12 @@
 
 <!-- 다른 mapper와 중복되지 않고록 네임스페이스 기재 -->
 <mapper namespace="reply">
-	<!-- 댓글입력 -->
+	<!-- 1. 댓글입력 -->
 	<insert id = "insertReply">
 		INSERT INTO tbl_reply(rno, replytext, bno, replyer, userName, secretReply)
 		values(reply_seq.nextval, #{replytext},#{bno}, #{replyer}, #{userName}, #{secretReply})
 	</insert>
-	<!-- 댓글목록 -->
+	<!-- 2. 댓글목록 -->
 	<select id = "listReply" resultType="com.app.spring.model.dto.ReplyVO">
 		<include refid = "pagingHeader"/>
 		<!-- select rno, bno, replytext, replyer, userName, r.regdate, r.updatedate
@@ -25,10 +25,37 @@
 		<include refid="pagingFooter"/>
 	</select>
 	
-	<!-- 댓글 갯수(페이징처리) -->
+	
+	<!-- 3. 댓글 상세보기 -->
+	<select id = "detailReply" resultType="com.app.spring.model.dto.ReplyVO">
+		SELECT rno,bno,replyText,replyer,regdate,updatedate,secretReply
+		FROM tbl_reply
+		WHERE rno=#{rno}
+	</select>
+	
+	
+	<!-- 4. 댓글 수정 -->
+	<select id ="updateReply">
+		UPDATE tbl_reply
+		SET replytext=#{replytext}
+		WHERE rno=#{rno}
+	</select>
+	
+	
+	<!-- 5. 댓글삭제 -->
+	<delete id = "deleteReply">
+		DELETE FROM tbl_reply
+		WHERE rno = #{rno}
+	</delete>
+	
+	
+	
+	<!-- 6. 댓글 갯수(페이징처리) -->
 	<select id = "countReply" resultType="int">
 		SELECT count(*)	 FROM tbl_reply WHERE bno=#{bno}
 	</select>
+	
+	
 	
 	<!-- 페이징 SQL -->
 	<sql id = "pagingHeader">

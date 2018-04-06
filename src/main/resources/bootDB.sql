@@ -73,7 +73,22 @@ FROM(
 	
 alter table tbl_reply modify( secretReply varchar(1) default null);
 
-update tbl_reply set secretReply='n';
-	
+
+---------------------------------------------------------04/06
+
+
+delete from tbl_reply where secretReply is null;
+
+delete from tbl_reply where rno is not null;
+alter table tbl_reply add foreign key (bno) references tbl_board(bno);
+
+
+select * from information_schema.table_constraints where table_name = 'tbl_reply';
+alter table tbl_reply drop constraint SYS_C0010843;
+alter table tbl_reply add constraint reply_FK foreign key (bno) references tbl_board(bno) on delete cascade;
+--게시물을 삭제할때 같이 삭제해버리러면 on delete casecade 옵션을 사용하면 된다.
+--그러나 그것을 방지하고싶다면.
+
+----------------------------------------------------------
 	
 	
