@@ -5,8 +5,28 @@ values('김준성', 'id1212', '99', '1111', sysdate , sysdate);
 insert into member (name, id, age, passwd, reg, updt)
 values('이안 막케이', 'ian1111', '23', '1111', sysdate , sysdate);
 
-ALTER TABLE member
-MODIFY (id varchar2(200) );
+ALTER TABLE member MODIFY (id varchar2(200) );
+
+create table tbl_board(
+	user_name varchar(30),
+	viewcnt number(22),
+	reg_date date default SYSDATE,
+	writer varchar(50),
+	content varchar(3000),
+	title varchar(200),
+	bno number(22),
+	constraint tbl_board_PK primary key (bno)
+)
+
+create table tbl_member(
+	user_id varchar(100),
+	password varchar(100),
+	email varchar(100),
+	reg_date date default SYSDATE,
+	up_date date default SYSDATE,
+	constraint tbl_member_pk primary key (user_id)
+	
+)	
 
 
 SELECT rownum,bno,title,content, b.regdate, viewcnt, writer
@@ -36,6 +56,7 @@ create table tbl_reply(
 	replytext varchar(500),
 	replyer varchar(100),
 	userName varchar(100),
+	secretReply varchar(1),
 	regdate Date default SYSDATE,
 	updatedate Date default SYSDATE,
 	CONSTRAINT PK_reply PRIMARY KEY(rno)
@@ -71,20 +92,15 @@ FROM(
 -- 게 중에서 시작와 끝 번호에 맞는 레코드들을 불러오는것같다.
 -- rownum은 오라클에서 지원하는 가상칼럼이였다
 	
-alter table tbl_reply modify( secretReply varchar(1) default null);
+alter table tbl_reply add( secretReply varchar(1) default null);
 
 
 ---------------------------------------------------------04/06
 
-
+delete from tbl_reply;
 delete from tbl_reply where secretReply is null;
 
 delete from tbl_reply where rno is not null;
-alter table tbl_reply add foreign key (bno) references tbl_board(bno);
-
-
-select * from information_schema.table_constraints where table_name = 'tbl_reply';
-alter table tbl_reply drop constraint SYS_C0010843;
 alter table tbl_reply add constraint reply_FK foreign key (bno) references tbl_board(bno) on delete cascade;
 --게시물을 삭제할때 같이 삭제해버리러면 on delete casecade 옵션을 사용하면 된다.
 --그러나 그것을 방지하고싶다면.
