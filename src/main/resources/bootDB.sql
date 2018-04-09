@@ -105,6 +105,8 @@ alter table tbl_reply add constraint reply_FK foreign key (bno) references tbl_b
 --게시물을 삭제할때 같이 삭제해버리러면 on delete casecade 옵션을 사용하면 된다.
 --그러나 그것을 방지하고싶다면.
 
-----------------------------------------------------------
-	
+---------------------------------------------------------- 04/09
+
+alter table tbl_board add( show varchar(1));
+update tbl_board set show= 'y' where show is null;
 	

@@ -10,9 +10,15 @@ public class BoardVO {
     private Date regdate;       // 게시글 작성일자 util.Date
     private int viewcnt;        // 게시글 조회수
     private String userName;	// 게시글 회원이름 = 게시글 작성자
-    private int recnt;     //댓글수 확장
+    private int recnt;     //댓글수
+    private String show;
     
-    
+	public String getShow() {
+		return show;
+	}
+	public void setShow(String show) {
+		this.show = show;
+	}
 	public int getRecnt() {
 		return recnt;
 	}
