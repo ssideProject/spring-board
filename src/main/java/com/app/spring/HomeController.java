@@ -20,10 +20,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -38,4 +34,17 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping("/doA")
+	public String doA() {
+		logger.info("doA.....");
+		return "home";
+	}
+	
+	
+	@RequestMapping("/doB")
+	public String doB(Model model) {
+		logger.info("doB......");
+		model.addAttribute("redult", "do b result");
+		return "home";
+	}
 }

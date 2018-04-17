@@ -4,10 +4,18 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -26,6 +34,32 @@
 	<context:component-scan base-package="com.app.spring" />
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
+	<!-- 로그인 체크를 인터셉터로 확인한다. 이전까지 게시물 접근시 Session에서 정보를 불러올때 include 를 일일이 넣어줘야했는데 이 방법을 써보자. -->
+	<beans:bean id = "loginInterceptor" class = "com.app.spring.interceptor.LoginInterceptor"/>
+	<interceptors>
+		<interceptor>
+		<!-- 참조할 로그인 체크 bean -->
+		 <beans:ref bean="loginInterceptor"/>
+		<!-- 인터셉터 매핑 url -->
+		<mapping path = "/board/write.do"/>
+		<mapping path = "/board/insert.do"/>
+		<mapping path = "board/update.do"/>
+		<mapping path = "board/delete.do"/>
+		<mapping path = "reply/insertRest.do"/>
+		
+		</interceptor>
+	</interceptors>
+	
+	<!-- 인터셉터 bean 설정 -->
+	<beans:bean id ="sampleInterceptor" class = "com.app.spring.interceptor.SampleInterceptor"/>
+	<interceptors>
+		<interceptor>
+			<!-- 인터셉터 매핑 -->
+			<mapping path ="/doA"/>
+			<mapping path ="/doB"/>
+			<beans:ref bean ="sampleInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 	
 </beans:beans>
