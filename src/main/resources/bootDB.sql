@@ -1,4 +1,4 @@
-insert into member (name, id, age, passwd, reg, updt)
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwinsert into member (name, id, age, passwd, reg, updt)
 values('김김', 'id1111', '22', '1111', sysdate , sysdate);
 insert into member (name, id, age, passwd, reg, updt)
 values('김준성', 'id1212', '99', '1111', sysdate , sysdate);
@@ -109,4 +109,52 @@ alter table tbl_reply add constraint reply_FK foreign key (bno) references tbl_b
 
 alter table tbl_board add( show varchar(1));
 update tbl_board set show= 'y' where show is null;
+
+
+------------------------------------------------------------04/17
+
+ CREATE TABLE tbl_user(
+      userid VARCHAR2(50) NOT NULL,
+      userpw VARCHAR2(50) NOT NULL,
+      uname VARCHAR2(100) NOT NULL,
+      upoint NUMBER DEFAULT 0,
+      PRIMARY KEY(userid)
+    );
+
+    -- 2. 메시지 저장 테이블 생성
+    CREATE TABLE tbl_message(
+      mid NUMBER NOT NULL,
+      targetid VARCHAR2(50) NOT NULL,
+      sender VARCHAR2(50) NOT NULL,
+      message VARCHAR2(4000) NOT NULL,
+      opendate DATE,
+      senddate DATE DEFAULT SYSDATE,
+      PRIMARY KEY(mid)
+    );
+
+    -- 3. 시퀀스 생성
+    CREATE SEQUENCE message_seq START WITH 1 INCREMENT BY 1;
+
+    -- 3. 제약조건(FK설정)
+    ALTER TABLE tbl_message ADD CONSTRAINT fk_usersender
+    FOREIGN KEY (sender) REFERENCES tbl_user(userid);
+    ALTER TABLE tbl_message ADD CONSTRAINT fk_usertarget
+    FOREIGN KEY (targetid) REFERENCES tbl_user(userid);
+
+    -- 사용자 추가(Insert)
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user01', '1234', 'kim');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user02', '1234', 'lee');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user03', '1234', 'park');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user04', '1234', 'choi');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user05', '1234', 'yoon');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user06', '1234', 'yang');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user07', '1234', 'cho');
+    INSERT INTO tbl_user (userid, userpw, uname) VALUES ('user08', '1234', 'koo');
+    COMMIT;
+    
+    
+    -- 포인트가 쌓였는지 보기
+    select * from TBL_USER;
+    select * from TBL_MESSAGE;
+
 	

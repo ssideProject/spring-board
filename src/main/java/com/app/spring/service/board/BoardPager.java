@@ -11,12 +11,15 @@ public class BoardPager {
     private int totBlock; // 전체 페이지 블록 갯수
     private int curBlock; // 현재 페이지 블록 
     private int prevBlock; // 이전 페이지 블록
-    private int nextBlock; // 다음 페이지 블록
+    private int nextBlock; // 다음 페이지 블록\
+    
     // WHERE rn BETWEEN #{start} AND #{end}
     private int pageBegin; // #{start}
     private int pageEnd; // #{end}
+    
     // [이전] blockBegin -> 41 42 43 44 45 46 47 48 49 50 [다음]
     private int blockBegin; // 현재 페이지 블록의 시작번호
+    
     // [이전] 41 42 43 44 45 46 47 48 49 50 <- blockEnd [다음]
     private int blockEnd; // 현재 페이지 블록의 끝번호
     
