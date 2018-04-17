@@ -1,4 +1,4 @@
-package com.app.spring.controller;
+package com.app.spring;
 
 
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class LoggingAOP {
 	 // 컨트롤러, 서비스, DAO의 모든 method를 실행 전후에 logPrint method가 자동으로 실행된다.
 	 // .. : 하위의 모든 디렉토리를 의미
 	 // *(..) : * - 하위의 모든 메서드, (..) - 모든 매개변수
-	//@Around("execution(* com.app.spring.controller..*Controller.*(..))"+"or execution(* com.app.spring.service..*Impl.*(..))"+" or execution(* com.app.spring.model..dao.*Impl.*(..))")
+	@Around("execution(* com.app.spring.controller..*Controller.*(..)) ||  execution(* com.app.spring.service..*Impl.*(..)) || execution(* com.app.spring.model..dao.*Impl.*(..))")
 	public Object logPrinnt(ProceedingJoinPoint joinPoint) throws Throwable{
 		//실행시간 체크 : 시작시간
 		long start = System.currentTimeMillis();
