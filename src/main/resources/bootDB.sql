@@ -157,4 +157,40 @@ update tbl_board set show= 'y' where show is null;
     select * from TBL_USER;
     select * from TBL_MESSAGE;
 
+    
+    
+    
+---------------------------------------------------------------------------- 04/18
+
+CREATE TABLE tbl_product (
+product_id NUMBER,              
+product_name VARCHAR2(50),   
+product_price NUMBER DEFAULT 0,
+product_desc VARCHAR2(500),  
+product_url VARCHAR2(500),  
+PRIMARY KEY(product_id)
+);
+
+
+INSERT INTO tbl_product VALUES (1,'나이키',100000,'나이키 2017년 신상제품입니다.','nike.jpg');
+INSERT INTO tbl_product VALUES (2,'아디다스',80000,'아디다스의 스테디 셀러!','adidas.jpg');
+INSERT INTO tbl_product VALUES (3,'뉴발란스',110000,'뉴발란스의 2016년 최고의 신발','newbalance.jpg');
+INSERT INTO tbl_product VALUES (4,'푸마',98000,'푸마 30프로 특가할인 제품입니다.','puma.jpg');
+INSERT INTO tbl_product VALUES (5,'팀버랜드',150000,'팀버랜드 스테디 셀러! 특별할인 중입니다.','timberland.png');
+INSERT INTO tbl_product VALUES (6,'락포트',99000,'편안한 로퍼 락포트입니다.','rockport.jpg');
+INSERT INTO tbl_product VALUES (7,'리복',120000,'2017 신상 퓨리 입고되었습니다.','reebok.jpg');
+INSERT INTO tbl_product VALUES (8,'컨버스',60000,'컨버스 특가할인 중입니다.','converse.jpg');
+
+
+
+
+
+SELECT
+            product_id AS productId, 
+            product_name AS productName, 
+            product_price AS productPrice, 
+            product_desc AS productDesc, 
+            product_url AS productUrl
+        FROM tbl_product 
+        WHERE product_id =8
 	
