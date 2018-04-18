@@ -4,7 +4,6 @@
 <head>
 <meta content="charset=UTF-8">
 <title>게시글 작성</title>
-<%@ include file="../include/header.jsp" %>
 <script>
 	$(document).ready(function(){
 		// 1. 게시글 수정 버튼
