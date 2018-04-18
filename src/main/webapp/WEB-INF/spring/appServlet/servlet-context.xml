@@ -46,8 +46,8 @@
 			<mapping path = "/board/write.do"/>
 			<mapping path = "/board/insert.do"/>
 			<mapping path = "/board/update.do"/>
-			<mapping path = "board/delete.do"/>
-			<mapping path = "reply/insertRest.do"/>
+			<mapping path = "/board/delete.do"/>
+			<mapping path = "/reply/insertRest.do"/>
 			<!-- 참조할 로그인 체크 bean -->
 			<beans:ref bean = "LoginInterceptor"/>
 		</interceptor>
