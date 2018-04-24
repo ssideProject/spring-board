@@ -1,4 +1,4 @@
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwinsert into member (name, id, age, passwd, reg, updt)
+insert into member (name, id, age, passwd, reg, updt)
 values('김김', 'id1111', '22', '1111', sysdate , sysdate);
 insert into member (name, id, age, passwd, reg, updt)
 values('김준성', 'id1212', '99', '1111', sysdate , sysdate);
@@ -193,4 +193,25 @@ SELECT
             product_url AS productUrl
         FROM tbl_product 
         WHERE product_id =8
+        
+        
+        
+---------------------------------------------------------------------04/24
+
+-- 장바구니 테이블 생성
+CREATE TABLE tbl_cart(
+cart_id NUMBER NOT NULL PRIMARY KEY,
+user_id VARCHAR2(50) NOT NULL,
+product_id NUMBER NOT NULL,
+amount NUMBER DEFAULT 0
+);
+
+-- 장바구니 테이블 시퀀스 생성
+CREATE SEQUENCE seq_cart START WiTH 10 INCREMENT BY 1;
+COMMIT;
+
+-- 장바구니 테이블 제약조건(외래키) 생성
+ALTER TABLE tbl_cart ADD CONSTRAINT cart_userid_fk FOREIGN KEY(user_id) REFERENCES tbl_member(user_id);
+ALTER TABLE tbl_cart ADD CONSTRAINT cart_product_fk FOREIGN KEY(product_id) REFERENCES tbl_product(product_id);
+COMMIT;
 	
