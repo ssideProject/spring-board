@@ -211,7 +211,13 @@ CREATE SEQUENCE seq_cart START WiTH 10 INCREMENT BY 1;
 COMMIT;
 
 -- 장바구니 테이블 제약조건(외래키) 생성
-ALTER TABLE tbl_cart ADD CONSTRAINT cart_userid_fk FOREIGN KEY(user_id) REFERENCES tbl_member(user_id);
+ALTER TABLE tbl_cart ADD CONSTRAINT cart_userid_fk FOREIGN KEY(user_id) REFERENCES member(id);
 ALTER TABLE tbl_cart ADD CONSTRAINT cart_product_fk FOREIGN KEY(product_id) REFERENCES tbl_product(product_id);
 COMMIT;
+
+
+
+--------------------------------------------------------------------- 04/28
+
+
 	
