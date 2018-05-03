@@ -4,16 +4,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.app.spring.model.dto.cookie.SiteVO;
 
-@Controller
+//@Controller
 public class CookieController {
-	
+/*	
 	//쿠키 생성
 	@RequestMapping(value="/addCuki", method=RequestMethod.GET)
 	public void createCookie(HttpServletResponse response, @ModelAttribute SiteVO vo){
@@ -60,5 +58,5 @@ public class CookieController {
 		}
 
 	}
-	
+	*/
 }
