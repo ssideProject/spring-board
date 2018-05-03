@@ -52,8 +52,8 @@ public class ReplyController {
 	
 	// 1_2. 댓글입력(Rest방식으로 Json전달하여 글쓰기)
 	//@ResponseEntity : 데이터 + Http status code
-	//@ResponseBody : 객체를 json으로 (json -String)
-	//@RequestBody : json을 객체로
+	//@ResponseBody : 객체를 json으로 보내기 (json -> String)
+	//@RequestBody : json을 객체로 받기
 	@RequestMapping(value ="insertRest.do", method = RequestMethod.POST	)
 	public ResponseEntity<String> insertRest(@RequestBody ReplyVO vo , HttpSession session){
 		ResponseEntity<String> entity = null;
