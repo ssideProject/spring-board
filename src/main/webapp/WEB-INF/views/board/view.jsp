@@ -92,7 +92,7 @@
 		
 	// 1_2. 댓글쓰기 (json 방식)
 	function replyJson(){
-		var replytext = $("#replytext").val();
+		var replytext = $("#replytext").val(); 
 		var bno  = "${dto.bno}";
 		var secretReply = "n";
 		//태그.is(":속성")   ->> 체크여부 ture/false
