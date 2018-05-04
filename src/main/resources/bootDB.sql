@@ -208,7 +208,7 @@ amount NUMBER DEFAULT 0
 
 -- 장바구니 테이블 시퀀스 생성
 CREATE SEQUENCE seq_cart START WiTH 10 INCREMENT BY 1;
-COMMIT;
+drop SEQUENCE seq_cart;
 
 -- 장바구니 테이블 제약조건(외래키) 생성
 ALTER TABLE tbl_cart ADD CONSTRAINT cart_userid_fk FOREIGN KEY(user_id) REFERENCES member(id);
@@ -218,6 +218,8 @@ COMMIT;
 
 
 --------------------------------------------------------------------- 04/28
+
+
 
 
 	
