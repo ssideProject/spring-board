@@ -381,12 +381,6 @@
 					</dependency>
 				</dependencies>
 				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>       <!-- weave all main classes -->
-							<goal>test-compile</goal>  <!-- weave all test classes -->
-						</goals>
-					</execution>
 				</executions>
 				<configuration>
 					<outxml>true</outxml>
